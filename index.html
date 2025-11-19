@@ -1,0 +1,71 @@
+Script Code Snippet :
+<!DOCTYPE html>
+<html>
+<body>
+ 
+<h1>The iframe element</h1>
+ 
+<iframe width='700px' height='800px' id="myIframe" title="Contact Us Form"></iframe>
+ 
+<script>
+
+function detectUTM() {
+    const params = new URLSearchParams(window.location.search);
+    console.log(params + 'abcd');
+
+    if(!params.has("utm_source") && !params.has("utm_medium")){
+        const ref = document.referrer.toLowerCase();
+
+        let src = '';
+        let med = '';
+
+        console.log(ref + 'ref');
+
+        if (ref.includes("facebook.com")) {
+            src = "facebook";
+            med = "social";
+        } 
+        else if (ref.includes("instagram.com")) {
+            src = "instagram";
+            med = "social";
+        } 
+        else if (ref.includes("linkedin.com")) {
+            src = "linkedin";
+            med = "social";
+        } 
+        else if (ref.includes("t.co") || ref.includes("twitter.com")) {
+            src = "twitter";
+            med = "social";
+        }
+        else if (
+            ref.includes("google.") ||
+            ref.includes("bing.") ||
+            ref.includes("yahoo.")
+        ) {
+            med = "organic";
+            if (ref.includes("google.")) src = "google";
+            if (ref.includes("bing.")) src = "bing";
+            if (ref.includes("yahoo.")) src = "yahoo";
+        }
+
+        params.set("utm_source", src);
+        params.set("utm_medium", med);
+
+    }
+
+    return params.toString();
+    
+}
+
+const iframeBase = 'https://oasismarinas--dev--c.sandbox.vf.force.com/apex/contactUsForm';
+
+const utmQuery = detectUTM(); 
+
+const iframeUrl = iframeBase + "?" + utmQuery;
+
+document.getElementById("myIframe").src = iframeUrl;
+
+</script>
+ 
+</body>
+</html>
